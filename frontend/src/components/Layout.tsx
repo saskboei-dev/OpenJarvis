@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { Sidebar } from './Sidebar/Sidebar';
-import { SystemPulse } from './SystemPulse';
+import { JarvisArcReactor } from './JarvisArcReactor';
 import { useAppStore } from '../lib/store';
 import { checkHealth } from '../lib/api';
 
@@ -24,31 +24,27 @@ export function Layout() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col h-full w-full overflow-hidden relative" style={{ paddingTop: '3px' }}>
-      <div className="hud-backdrop" aria-hidden="true" />
-      <SystemPulse apiReachable={apiReachable} />
+    <div className="flex flex-col h-full w-full overflow-hidden relative">
+      {/* JARVIS Background Effects */}
+      <div className="jarvis-bg-grid" aria-hidden="true" />
+      <div className="jarvis-scanlines" aria-hidden="true" />
+      
+      <JarvisArcReactor apiReachable={apiReachable} />
 
       {/* Health check banner */}
       {apiReachable === false && (
         <div
-          className="flex items-center gap-3 px-4 py-2 text-sm shrink-0"
-          style={{
-            background: 'color-mix(in srgb, var(--color-error) 8%, transparent)',
-            borderBottom: '1px solid color-mix(in srgb, var(--color-error) 15%, transparent)',
-            color: 'var(--color-text)',
-          }}
+          className="alert-banner"
         >
           <span
-            className="w-1.5 h-1.5 rounded-full shrink-0"
-            style={{ background: 'var(--color-error)' }}
+            className="status-dot alert"
           />
-          <span>Cannot reach OpenJarvis backend</span>
+          <span>CANNOT REACH OPENJARVIS BACKEND</span>
           <button
             onClick={() => navigate('/settings')}
-            className="text-sm underline cursor-pointer ml-auto shrink-0"
-            style={{ color: 'var(--color-accent)' }}
+            className="jarvis-button text-xs ml-auto"
           >
-            Change URL
+            CHANGE URL
           </button>
         </div>
       )}
